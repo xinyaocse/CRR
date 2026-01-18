@@ -68,7 +68,8 @@ def main():
             noisy_data = perturb(data_train, MEC, SCA)
 
         # 3. Inference attack
-        attack_result = inference_attack(noisy_data, data_train, THR)
+        test_size = int(data_test.shape[0] * 1)
+        attack_result = inference_attack(noisy_data, data_test[:test_size, :], THR)
 
         # 4. Result analysis
         # (Conducted under the assumption that data are normalized)
