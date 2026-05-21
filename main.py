@@ -34,7 +34,7 @@ parser.add_argument('-r', '--rho',
                     help='the correlation coefficient of noise for 2-D data.')
 parser.add_argument('-t', '--threshold',
                     default=0.75, type=float,
-                    help='the threshold of inference attack.')
+                    help='the threshold of reconstruction.')
 
 args = parser.parse_args()
 
@@ -70,10 +70,10 @@ def main():
 
         # 3. Reconstruction
         test_size = int(data_test.shape[0] * 1)
-        attack_result = reconstruction(noisy_data, data_test[:test_size, :], THR)
+        rec_result = reconstruction(noisy_data, data_test[:test_size, :], THR)
 
         # 4. Result analysis
-        mse_ptb, mse_rec, rg = result_analyze(attack_result, noisy_data,data_train)
+        mse_ptb, mse_rec, rg = result_analyze(rec_result, noisy_data,data_train)
 
         # 5. Print Metrics
         print(f'========== Exp {i + 1}/{EXP} ==========')
