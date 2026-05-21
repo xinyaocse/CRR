@@ -1,8 +1,9 @@
 import argparse
+from tqdm import trange
 
 from src.load_data import *
 from src.perturb_mechanism import *
-from src.inference_attack import *
+from src.reconstruction import *
 from src.result_analyze import *
 
 parser = argparse.ArgumentParser()
@@ -67,26 +68,18 @@ def main():
             # 2. Perturb
             noisy_data = perturb(data_train, MEC, SCA)
 
-        # 3. Inference attack
+        # 3. Reconstruction
         test_size = int(data_test.shape[0] * 1)
-        attack_result = inference_attack(noisy_data, data_test[:test_size, :], THR)
+        attack_result = reconstruction(noisy_data, data_test[:test_size, :], THR)
 
         # 4. Result analysis
-        # (Conducted under the assumption that data are normalized)
-        amse_ptb, amse_atk, aes, dp, cdp, ddp, bdp, cadp = result_analyze(attack_result, noisy_data, data_train,
-                                                                          MEC, SCA, THR)
+        mse_ptb, mse_rec, rg = result_analyze(attack_result, noisy_data,data_train)
 
         # 5. Print Metrics
         print(f'========== Exp {i + 1}/{EXP} ==========')
-        print('AMSE_ptb = ' + np.array2string(amse_ptb, precision=2))
-        print('AMSE_atk = ' + np.array2string(amse_atk, precision=2))
-        print('AES = ' + np.array2string(aes, precision=2))
-        print('DP guarantee = ' + np.array2string(dp, precision=2, max_line_width=9999))
-        print('CDP guarantee = ' + np.array2string(cdp, precision=2, max_line_width=9999))
-        print('DDP guarantee = ' + np.array2string(ddp, precision=2, max_line_width=9999))
-        print('BDP guarantee = ' + np.array2string(bdp, precision=2, max_line_width=9999))
-        if MEC == 'gauss' or MEC == 'cgm':
-            print('CADP guarantee = ' + np.array2string(cadp, precision=2, max_line_width=9999))
+        print('MSE_ptb = ' + np.array2string(mse_ptb, precision=2))
+        print('MSE_rec = ' + np.array2string(mse_rec, precision=2))
+        print('RG = ' + np.array2string(rg, precision=2))
 
 
 if __name__ == "__main__":
