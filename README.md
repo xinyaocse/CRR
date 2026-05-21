@@ -1,5 +1,5 @@
-# CADP
-Correlation-Aware Differential Privacy
+# Σ-Guard
+Reconstruction-Robust Differentially Private Multi-Attribute Data Publishing
 
 ## Environmental Setup
 
@@ -21,7 +21,7 @@ The directory and structure of the files are as follows:
     | -- raw                    # unprocessed dataset
     | -- synthetic              # artificial 2-d data with specific correlations
 |-- src ...                     # folder that stores source code
-    | -- inference_attack.py    # core for ρ-Leak inference
+    | -- reconstruction.py    # core for ρ-Rec
     | -- load_data.py           # util for loading data
     | -- perturb_mechanism.py   # util for perturbation, core for CGM
     | -- result_analyze.py      # util for analyzing reconstruction results
@@ -32,11 +32,11 @@ main.py                         # program entry for reconstruction
 
 ## Running the Experiments
 
-Our experimental pipeline consists of two main parts : *ρ-Leak reconstruction* and *downstream task*.
+Our experimental pipeline consists of two main parts : *ρ-Rec reconstruction* and *downstream task*.
 
-### 1. ρ-Leak reconstruction
+### 1. ρ-Rec reconstruction
 
-To run ρ-Leak reconstruction on real dataset, use the following example command:
+To run ρ-Rec reconstruction on real dataset, use the following example command:
 
 ```
 python main.py -d gas -e 50 -m gauss -s 1 -t 0.75
@@ -65,7 +65,7 @@ python downstream.py -d gas -e 50 -m gauss -s 0.1
 - `-m`: the perturbation mechanism
 - `-s`: the noise scale
 - `-r`: the correlation coefficient of noise for CGM, only activated when "-a = True" and "-m = cgm"
-- `-t`: the threshold for inference
+- `-t`: the threshold for reconstruction
 
 ## Datasets
 
