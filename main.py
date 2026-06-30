@@ -66,7 +66,7 @@ def main():
             # 1. Load data
             data_train, data_test = get_processed_dataset(DAT)
             # 2. Perturb
-            noisy_data = perturb(data_train, MEC, SCA)
+            noisy_data = perturb(data_train, MEC, SCA, data_test)
 
         # 3. Reconstruction
         test_size = int(data_test.shape[0] * 1)
