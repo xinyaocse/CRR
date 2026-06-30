@@ -69,7 +69,7 @@ def main():
         train_x = normalize(train_x)
         test_x = normalize(test_x)
         # 2. Perturb
-        noisy_x = perturb(train_x, MEC, SCA)
+        noisy_x = perturb(train_x, MEC, SCA, test_x)
         if DAT == 'auto' or DAT == 'gas':
             # 3. Model learning (regression)
             rmse, mae, r2 = linear_regression(noisy_x, train_y, test_x, test_y)
