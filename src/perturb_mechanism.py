@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def perturb(org_data, mechanism, scale):
+def perturb(org_data, mechanism, scale, public_data=None):
     if mechanism not in ['none', 'gauss', 'lap', 'cgm']:
         raise RuntimeError('Unsupported mechanism')
     elif mechanism == 'gauss':
@@ -9,7 +9,7 @@ def perturb(org_data, mechanism, scale):
     elif mechanism == 'lap':
         return laplace_mechanism(org_data, scale)
     elif mechanism == 'cgm':
-        return corr_gaussian_mechanism(org_data, scale)
+        return corr_gaussian_mechanism(org_data, scale, public_data)
     elif mechanism == 'none':
         return org_data
 
@@ -64,9 +64,12 @@ def laplace_mechanism(org_data, scale):
     return org_data + noise
 
 
-def corr_gaussian_mechanism(org_data, scale):
+def corr_gaussian_mechanism(org_data, scale, public_data):
     record_count = org_data.shape[0]
     dim_count = org_data.shape[1]
+    
+    if public_data is None:
+        raise RuntimeError('D_pub cannot be null')
 
     if isinstance(scale, (int, float)) and not isinstance(scale, bool):
         scale = np.ones(dim_count) * scale
@@ -79,7 +82,7 @@ def corr_gaussian_mechanism(org_data, scale):
     if scale.shape[0] != dim_count:
         raise RuntimeError('Incorrect shape of σ')
 
-    corr = np.corrcoef(org_data, rowvar=False)
+    corr = np.corrcoef(public_data, rowvar=False)
 
     mean = np.zeros(dim_count)
     sigma = np.diag(scale)
